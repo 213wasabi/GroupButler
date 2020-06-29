@@ -74,7 +74,8 @@ function message:send_reply(text, parse_mode, disable_web_page_preview, disable_
 		self.message_id, reply_markup)
 end
 
-function message:delay_delete(sec, chat_id, msg_id)
+function message:delay_delete(chat_id, msg_id, sec)
+    sec = sec or 5  -- 5 seconds by default
 	co = coroutine.wrap(
 		function(sec, chat_id, msg_id)
 			ngx.sleep(sec)
