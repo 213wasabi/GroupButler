@@ -75,7 +75,7 @@ function message:send_reply(text, parse_mode, disable_web_page_preview, disable_
 end
 
 function message:delay_delete(chat_id, msg_id, sec)
-    sec = sec or 5  -- 5 seconds by default
+	sec = sec or 5  -- 5 seconds by default
 	local co = coroutine.wrap(
 		function(sec, chat_id, msg_id)
 			if ngx then
