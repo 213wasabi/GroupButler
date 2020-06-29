@@ -76,9 +76,14 @@ end
 
 function message:delay_delete(chat_id, msg_id, sec)
     sec = sec or 5  -- 5 seconds by default
-	co = coroutine.wrap(
+	local co = coroutine.wrap(
 		function(sec, chat_id, msg_id)
-			ngx.sleep(sec)
+			if ngx then
+				ngx.sleep(sec)
+			else
+				local sock = require("socket")
+				sock.sleep(sec * 1000)
+			end
 			p(self).api.deleteMessage(chat_id, msg_id)
 		end
 	)

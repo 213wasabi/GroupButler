@@ -167,7 +167,8 @@ function _M:onTextMessage(blocks)
 				end
 				-- turn on the welcome message in the group settings
 				db:set_chat_setting(msg.from.chat.id, "Welcome", true)
-				msg:send_reply(i18n("A form of media has been set as the welcome message: `%s`"):format(replied_to), "Markdown")
+				local ok = msg:send_reply(i18n("A form of media has been set as the welcome message: `%s`"):format(replied_to), "Markdown")
+				msg:delay_delete(msg.from.chat.id, ok.message_id)
 			else
 				msg:send_reply(i18n("Reply to a `sticker` or a `gif` to set them as the *welcome message*"), "Markdown")
 			end
