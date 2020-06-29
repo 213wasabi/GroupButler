@@ -74,6 +74,22 @@ function message:send_reply(text, parse_mode, disable_web_page_preview, disable_
 		self.message_id, reply_markup)
 end
 
+function message:delay_delete(chat_id, msg_id, sec)
+	sec = sec or 5  -- 5 seconds by default
+	local co = coroutine.wrap(
+		function(sec, chat_id, msg_id)
+			if ngx then
+				ngx.sleep(sec)
+			else
+				local sock = require("socket")
+				sock.sleep(sec * 1000)
+			end
+			p(self).api.deleteMessage(chat_id, msg_id)
+		end
+	)
+	co(sec, chat_id, msg_id)
+end
+
 function Message:getTargetMember(blocks) -- TODO: extract username/id from self.text or move blocks{} into self
 	if   not self.reply_to_message
 	and (not blocks or not blocks[2]) then
