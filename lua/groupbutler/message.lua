@@ -74,6 +74,16 @@ function message:send_reply(text, parse_mode, disable_web_page_preview, disable_
 		self.message_id, reply_markup)
 end
 
+function message:delay_delete(sec, chat_id, msg_id)
+	co = coroutine.wrap(
+		function(sec, chat_id, msg_id)
+			ngx.sleep(sec)
+			p(self).api.deleteMessage(chat_id, msg_id)
+		end
+	)
+	co(sec, chat_id, msg_id)
+end
+
 function Message:getTargetMember(blocks) -- TODO: extract username/id from self.text or move blocks{} into self
 	if   not self.reply_to_message
 	and (not blocks or not blocks[2]) then
